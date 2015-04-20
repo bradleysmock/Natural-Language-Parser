@@ -8,3 +8,5 @@ __author__ = 'bradleyt79'
 # Adverb Phrase​​(modifier) + adverb + (modifier)
 #
 # Clause​​​​(conjunction) + (adverbial) + noun phrase + verb phrase + (indirect object) + (direct object) + (complement) + (adverbial)
+
+# TODO convert all this into CNF/CFG

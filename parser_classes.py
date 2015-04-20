@@ -1,16 +1,26 @@
 __author__ = 'bradleyt79'
 
-
-class Paragraph:
-    """group of sentences"""
+class Text:
+    """group of paragraphs"""
 
     para_count = 0
+    sentence_count = 0
     empty = []
     emptystring = ""
 
     def __init__(self, string):
-        Paragraph.para_count += 1
-        self.order = Paragraph.para_count
+        # find paragraphs
+
+
+class Paragraph:
+    """group of sentences"""
+
+    empty = []
+    emptystring = ""
+
+    def __init__(self, string):
+        Text.para_count += 1
+        self.order = Text.para_count
         self.string = string.strip()
         self.sentences = Paragraph.findsentences(self)
         self.length = len(self.sentences)
