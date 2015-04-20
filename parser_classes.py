@@ -15,6 +15,11 @@ class Paragraph:
         self.sentences = Paragraph.findsentences(self)
         self.length = len(self.sentences)
 
+
+    def print(self):
+        print(self.string)
+
+
     def findsentences(self):
         sentences = []
         if self.string != Paragraph.emptystring:
@@ -23,8 +28,6 @@ class Paragraph:
 
         return sentences
 
-    def append(self, sentence):
-        self.sentences.append(sentence)  # doesn't change paragraph
 
 class Sentence:
     """basic unit of written language"""
@@ -41,22 +44,3 @@ class Sentence:
         # self.type = self.findtype(self)
         # self.parts = self.findparts(self)
         # self.structType = self.findstructtype(self)
-
-
-
-s1 = Sentence("Hello.")
-s2 = Sentence("I'm John.")
-
-print(s1.length)
-print(s1.words)
-
-p1 = Paragraph("")
-
-print(p1.length)
-print(p1.string)
-
-p1.append(s1)
-p1.append(s2)
-
-print(p1.length)
-print(p1.string)
