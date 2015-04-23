@@ -1,3 +1,5 @@
+from builtins import print
+
 __author__ = 'bradleyt79'
 
 import parser
@@ -18,7 +20,7 @@ menuitems = [
     ("Exit", "", "")
     ]
 prompt_menu = "\nWhat would you like to do today? "
-prompt_text = "\nPlease enter the text you would like to process below:\n"
+prompt_text = "\nPlease enter the text you would like to process below. Use || to designate paragraph breaks.\n"
 prompt_file = "\nPlease enter the path (directory/filename) to the file you would like to process below:\n"
 
 

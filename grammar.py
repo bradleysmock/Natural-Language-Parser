@@ -1,12 +1,66 @@
 __author__ = 'bradleyt79'
 
-#Notes
-# Noun Phrase​​​(det) + (modifier) + noun + (modifier)
-# Verb Phrase​​​(auxiliary) + verb
-# Prepositional Phrase​​preposition + noun phrase
-# Adjective Phrase​​(modifier) + adjective + (modifier)
-# Adverb Phrase​​(modifier) + adverb + (modifier)
+#Note
+# Five English phrase types taken from Dictionary of English Grammar by Leech et al.
+# Noun Phrase ​​​(det) + (modifier) + noun + (modifier)
+# Verb Phrase ​​​(auxiliary) + verb
+# Prepositional Phrase​​ preposition + noun phrase
+# Adjective Phrase​​ (modifier) + adjective + (modifier)
+# Adverb Phrase​​ (modifier) + adverb + (modifier)
 #
-# Clause​​​​(conjunction) + (adverbial) + noun phrase + verb phrase + (indirect object) + (direct object) + (complement) + (adverbial)
+# Clause​​​​ (conjunction) + (adverbial) + noun phrase + verb phrase + (indirect object) + (direct object) + (complement) + (adverbial)
 
-# TODO convert all this into CNF/CFG
+# Grammar Constituents
+S = ("S", "Sentence")
+C = ("C", "Clause")
+NP = ("NP", "Noun Phrase")
+VP = ("VP", "Verb Phrase")
+PP = ("PP", "Prepositional Phrase")
+AdjP = ("AdjP", "Adjective Phrase")
+AdvP = ("AdvP", "Adverb Phrase")
+DO = ("DO", "Direct Object")
+IO = ("IO", "Indirect Object")
+Mod = ("Mod", "Modifier")
+N = ("N", "Noun")
+V = ("V", "Verb")
+Adj = ("Adj", "Adjective")
+Adv = ("Adv", "Adverb")
+PN = ("PN", "Pronoun")
+Prep = ("Prep", "Preposition")
+Conj = ("Conj", "Conjunction")
+Aux = ("Aux", "Auxiliary")
+Det = ("Det", "Determiner")
+Empty = ("Empty", "")
+end = ("end", "")
+
+# Grammar Patterns
+grammar = {
+    # Sentence Level
+    S: C,  # Really a clause list
+    C: (Conj, AdvP, NP, VP, IO, DO, AdvP),  # TODO Add Complement
+    # Non-terminal Phrases
+    NP: (Det, Mod, N, Mod),
+    VP: (Aux, V),
+    PP: (Prep, NP),
+    AdjP: (Mod, Adj, Mod),
+    AdvP: (Mod, Adv, Mod),
+    DO: (NP),
+    IO: (PP),
+    # Non-terminal Modifiers
+    Mod: (AdjP),  # TODO How to handle these?
+    #Mod: (AdvP),
+    # Terminal forms
+    N: (end),
+    V: (end),
+    Prep: (end),
+    Adj: (end),
+    Adv: (end),
+    Det: (end),
+    Aux: (end),
+    # Empty
+    Empty: (end)
+}
+
+# TODO functions required
+# lookup - returns the role of a word
+# match - returns the constituent
