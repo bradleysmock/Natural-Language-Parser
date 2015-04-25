@@ -34,9 +34,9 @@ Empty = ("Empty", "")
 end = ("end", "")
 
 # Grammar Patterns
-grammar = {
+patterns = {
     # Sentence Level
-    S: C,  # Really a clause list
+    S: [],  # Really a clause list
     C: (Conj, AdvP, NP, VP, IO, DO, AdvP),  # TODO Add Complement
     # Non-terminal Phrases
     NP: (Det, Mod, N, Mod),
@@ -60,7 +60,3 @@ grammar = {
     # Empty
     Empty: (end)
 }
-
-# TODO functions required
-# lookup - returns the role of a word
-# match - returns the constituent

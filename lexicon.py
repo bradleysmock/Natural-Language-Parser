@@ -1,11 +1,17 @@
 __author__ = 'bradleyt79'
-import frequency
+import longman3000
+import customdict
 
-# Local dictionary for testing
-longman3000 = frequency.longman3000
+# Contains functions for dealing with dictionaries.
 
-def lookup_pos(word):
-    for key in longman3000:
-        if key[0] == word:
-            print(key[1])
-            return key[1]
+# Local dictionaries for testing
+type_dict = longman3000
+freq_dict = longman3000
+# TODO link to NLTK for dictionaries
+
+def wordtype(word):
+    # TODO if type_dict.wordtype(word) == None:
+        # customdict.add(word)
+        # else:
+    return type_dict.wordtype(word)
+
