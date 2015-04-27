@@ -1,5 +1,9 @@
 __author__ = 'bradleyt79'
 
+import lexicon
+import grammar
+import string
+
 class Text:
     """group of paragraphs"""
 
@@ -10,21 +14,16 @@ class Text:
         self.paragraphs.append(paragraph)
 
     def paragraph_count(self):
-        len(self.paragraphs)
+        return len(self.paragraphs)
 
     def sentence_count(self):
-        count = 0
-        for paragraph in self.paragraphs:
-            count += paragraph.sentence_count
+        return sum(x.sentence_count() for x in self.paragraphs)
 
-        return count
+    def word_count(self):
+        return sum(x.word_count() for x in self.paragraphs)
 
     def string(self):
-        output = ""
-        for paragraph in self.paragraphs:
-            output = "\n".join([output, paragraph.string()])
-
-        return output
+        return " ".join(x.string() for x in self.paragraphs)
 
     def print(self):
         print(self.string())
@@ -32,7 +31,8 @@ class Text:
     def printstats(self):
         print("\nText Stats:")
         print("\tParagraphs: {}".format(self.paragraph_count()))
-        print("\tSentences: {}".format(self.sentence_count))
+        print("\tSentences: {}".format(self.sentence_count()))
+        print("\tWords: {}".format(self.word_count()))
 
 
 class Paragraph:
@@ -45,34 +45,21 @@ class Paragraph:
         self.sentences.append(sentence)
 
     def sentence_count(self):
-        len(self.sentences)
+        return len(self.sentences)
 
     def word_count(self):
-        count = 0
-        for sentence in self.sentences:
-            count += sentence.word_count
-
-        return count
+        return sum(x.word_count() for x in self.sentences)
 
     def string(self):
-        output = ""
-        for sentence in self.sentences:
-            output = " ".join([output, sentence.string()])
-
-        return output
+        return " ".join(sentence.string() for sentence in self.sentences)
 
     def print(self):
         print(self.string())
 
-    def printsentences(self):
-        n = 0
-        for sentence in self.sentences:
-            print("{:2}. {}".format(n, sentence.string))
-            n += 1
-
     def printstats(self):
         print("\nParagraph Stats:")
-        print("\tSentences: {}".format(self.sentence_count))
+        print("\tSentences: {}".format(self.sentence_count()))
+        print("\tWords: {}".format(self.word_count()))
 
 
 class Sentence:
@@ -80,15 +67,22 @@ class Sentence:
 
     def __init__(self):
         self.clauses = []
-        #self.length = len(self.words())
-        #self.word_count = self.length
-        #self.unique_count = len(self.wordset())
 
     def add(self, clause):
         self.clauses.append(clause)
 
+    def word_count(self):
+        return sum(x.word_count() for x in self.clauses)
+
     def string(self):
-        " ".join(self.clauses)
+        return " ".join(clause.string() for clause in self.clauses)
+
+    def print(self):
+        print(self.string())
+
+    def printstats(self):
+        print("Sentence Stats:")
+        print("Words: {}".format(self.word_count()))
 
 
 class Clause:
@@ -96,9 +90,86 @@ class Clause:
 
     def __init__(self):
         self.parts = []
+        self.type = "Unknown"
+        # For reference: grammar.C: (Conj, AdvP, NP, VP, IO, DO, AdvP)
+        self.structure = grammar.C
 
     def add(self, part):
-        self.parts.append(part)
+        # add punctuation
+        if part in string.punctuation:
+            self.parts.append(part)
+        # add word
+        else:
+            #  get word type
+            wordtype = lexicon.wordtype(part)
+            # consult grammar
+            phrase = grammar.phrasetype(wordtype)
+            print(phrase)
+            # able to add to current clause?
+            if True:
+                self.parts.append(part)
+                return True
+            else:
+                return False
+
+
+    def word_count(self):
+        return sum([1 for x in self.parts if x.isalnum()])
 
     def string(self):
-        " ".join(self.parts)
+        return " ".join(self.parts)
+
+    def print(self):
+        print(self.string())
+
+    def printstats(self):
+        print("Clause Stats:")
+        print("\tWords: {}".format(self.word_count()))
+        print("\tStructure: {}".format(self.structure))
+
+
+# External Functions
+def newClause(part):
+    return Clause().add(part)
+
+
+# Class Tests
+def run_tests():
+    sentences = [
+        [['The', 'man', 'in', 'the', 'mask', 'screamed'], ['.']],
+        [['The', 'woman', 'laughed'], ['.']],
+        [['The', 'boy', 'cried'], ['.']],
+        [['The', 'girl', 'in', 'the', 'petticoat', 'smiled'], ['.']],
+        [['The', 'dog', 'with', 'a', 'bone', 'whined'], ['.']],
+        [['The', 'cat', 'mewed'], ['.']],
+        [['Dr', '.', 'John', 'said'], ['hello'], ['.']],
+        [['Mr', '.', 'Kim', 'gave', 'Mrs', '.', 'Kim', 'a', 'gift'], ['.']]
+    ]
+
+    t = Text()
+    p = Paragraph()
+    for sentence in sentences:
+        s = Sentence()
+        for clause in sentence:
+            c = Clause()
+            for part in clause:
+                c.add(part)
+
+            s.add(c)
+            c.print()
+            # c.printstats()
+
+        p.add(s)
+        # s.print()
+        # s.printstats()
+
+    # print("\nParagraph:\n{}".format(p.string()))
+    # p.printstats()
+
+    t.add(p)
+    # print("\nText:\n{}".format(t.string()))
+    # t.printstats()
+
+
+run_tests()
+

@@ -60,3 +60,14 @@ patterns = {
     # Empty
     Empty: (end)
 }
+
+
+def phrasetype(wordtype):
+    for key in patterns:
+        if key[0] == wordtype:
+            return patterns[key]
+        else:
+            continue
+
+    print("Unable to match word type to grammar: {}".format(wordtype))
+    return None
