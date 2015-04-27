@@ -1,39 +1,68 @@
 __author__ = 'bradleyt79'
 
-import string as S
-import parser_classes as P
-import lexicon as L
+import re
+import string
+import parser_classes
+import lexicon
 import samples
 
-# Parser globals
-end = [".", "?", "!"]
-sub = [".", "?", "!", ",", ":", ";", "- ", "' ", " '", '"', "(", ")"]
+# Global Constants
+end_paragraph = ["\n", "||"]
+end_sentence = [".", "?", "!"]
+end_clause = [",", ":", ";", "- ", "' ", " '", '"', "(", ")"]
+sub = end_sentence + end_clause
 
-def tokenize(string):
+def tokenize(text):
         # Maybe slow...
+        # For reference: sub = [".", "?", "!", ",", ":", ";", "- ", "'", '"', "(", ")"]
         for x in sub:
-            string = string.replace("{}".format(x), " {} ".format(x))
+            text = text.replace("{}".format(x), " {} ".format(x))
 
-        return string.split()
-
+        # Note: returns Mr. as ['Mr', '.']
+        return text.split()
 
 def parse(text):
-    # convert to Text
-    # TODO throws error "module has no attribute X" when run parse.py but not parse_ui
-    # t = P.new_text(text)
-    t = P.Text(text)
-    for p in t.paragraphs:
-        for s in p.sentences:
-            print(s.tokens)
-            structure = []
-            for token in s.tokens:
-                # TODO still very unfinished
-                if token not in end:
-                    structure.append(L.wordtype(token))
+    t = parser_classes.Text()
+    tokens = tokenize(text)
+
+    # initialize
+    p = parser_classes.Paragraph()
+    s = parser_classes.Sentence()
+    c = parser_classes.Clause()
+
+    # analyze tokens
+    for token in tokens:
+        # check for end of paragraph
+        if token in end_paragraph:
+            # add paragraph to Text, omitting token
+            t.add(p.add(s.add(c.add)))
+        else:
+            # check for punctuation
+            if token in string.punctuation:
+                # check for end of sentence/clause
+                if token in end_sentence:
+                    # end sentence
+                    s.add(c)
+                    s.add(token)
+                    p.add(s)
+                    s = parser_classes.Sentence()
+                elif token in end_clause:
+                    # end clause
+                    s.add(c)
+                    s.add(token)
+                    c = parser_classes.Clause()
+                else:
+                    # build clause
+                    c.add(token)
+            else:
+                # build clause
+                c.add(lexicon.wordtype(token))
+
+    return t
 
 
-            print(structure)
+def test_parse(text):
+    print(parse(text).string())
 
 
-# Parser tests
-parse(samples.t1)
+test_parse(samples.t1)
