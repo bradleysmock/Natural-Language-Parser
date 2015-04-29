@@ -35,4 +35,8 @@ dictionary = {
     ('Mrs', 'N'),
     ('Kim', 'N'),
     ('gave', 'V'),
+    ('is', 'V'),
+    ('eating', 'V'),
+    ('delicious', 'Adj'),
+    ('hotdog', 'N')
 }

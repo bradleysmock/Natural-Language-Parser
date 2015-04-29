@@ -4,6 +4,7 @@ import lexicon
 import grammar
 import string
 
+
 class Text:
     """group of paragraphs"""
 
@@ -89,35 +90,32 @@ class Clause:
     """sub-unit of a sentence"""
 
     def __init__(self):
-        self.parts = []
-        self.type = "Unknown"
+        self.tokens = []
+        # Define clause structure from grammar
         # For reference: grammar.C: (Conj, AdvP, NP, VP, IO, DO, AdvP)
-        self.structure = grammar.C
+        self.model_structure = grammar.C
+        self.current_phrase = None
+        self.structure = grammar.empty_C
 
-    def add(self, part):
+    def add(self, token):
         # add punctuation
-        if part in string.punctuation:
-            self.parts.append(part)
+        if token in string.punctuation:
+            self.tokens.append(token)
         # add word
         else:
-            #  get word type
-            wordtype = lexicon.wordtype(part)
-            # consult grammar
-            phrase = grammar.phrasetype(wordtype)
-            print(phrase)
-            # able to add to current clause?
+            # add token to current_phrase
             if True:
-                self.parts.append(part)
+                self.tokens.append(token)
                 return True
             else:
                 return False
 
 
     def word_count(self):
-        return sum([1 for x in self.parts if x.isalnum()])
+        return sum([1 for x in self.tokens if x.isalnum()])
 
     def string(self):
-        return " ".join(self.parts)
+        return " ".join(self.tokens)
 
     def print(self):
         print(self.string())
@@ -136,14 +134,14 @@ def newClause(part):
 # Class Tests
 def run_tests():
     sentences = [
-        [['The', 'man', 'in', 'the', 'mask', 'screamed'], ['.']],
-        [['The', 'woman', 'laughed'], ['.']],
-        [['The', 'boy', 'cried'], ['.']],
-        [['The', 'girl', 'in', 'the', 'petticoat', 'smiled'], ['.']],
-        [['The', 'dog', 'with', 'a', 'bone', 'whined'], ['.']],
-        [['The', 'cat', 'mewed'], ['.']],
-        [['Dr', '.', 'John', 'said'], ['hello'], ['.']],
-        [['Mr', '.', 'Kim', 'gave', 'Mrs', '.', 'Kim', 'a', 'gift'], ['.']]
+        [['The', 'man', 'in', 'the', 'mask', 'screamed'], ['.']]  #,
+        # [['The', 'woman', 'laughed'], ['.']],
+        # [['The', 'boy', 'cried'], ['.']],
+        # [['The', 'girl', 'in', 'the', 'petticoat', 'smiled'], ['.']],
+        # [['The', 'dog', 'with', 'a', 'bone', 'whined'], ['.']],
+        # [['The', 'cat', 'mewed'], ['.']],
+        # [['Dr', '.', 'John', 'said'], ['hello'], ['.']],
+        # [['Mr', '.', 'Kim', 'gave', 'Mrs', '.', 'Kim', 'a', 'gift'], ['.']]
     ]
 
     t = Text()
@@ -171,5 +169,4 @@ def run_tests():
     # t.printstats()
 
 
-run_tests()
-
+# run_tests()

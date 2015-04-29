@@ -38,7 +38,6 @@ def parse(text):
         token = tokens[n]
         # check for last token
         if n == len(tokens) - 1:
-            # TODO needs reworking here eventually
             # add token as new clause (assumes end punctuation)
             s.add(c)
             c = parser_classes.Clause()
@@ -102,7 +101,7 @@ def test_parse(text):
     parsing = parse(text)
 
     # parsing.print()
-    parsing.printstats()
+    # parsing.printstats()
 
     pn = 1
     for p in parsing.paragraphs:
