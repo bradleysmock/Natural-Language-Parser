@@ -20,6 +20,7 @@ class Terminal:
     def __init__(self):
         self.type = "Terminal"
         self.value = empty
+        self.isempty = True
 
     def string(self):
         return self.value
@@ -32,6 +33,7 @@ class Terminal:
 
     def add(self, token):
         self.value = token
+        self.isempty = False
         return self.value
 
     def contains(self, wordtype):
@@ -45,6 +47,7 @@ class Phrase:
     def __init__(self):
         self.type = "Phrase"
         self.value = []
+        self.isempty = True
 
     def string(self):
         return " ".join(x.string() for x in self.value)

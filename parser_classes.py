@@ -70,7 +70,33 @@ class Sentence:
         self.clauses = []
 
     def add(self, clause):
-        self.clauses.append(clause)
+        return self.clauses.append(clause)
+
+    def build(self, clauselist):
+        print(clauselist)
+        for clause in clauselist:
+            if type(clause) is Clause:
+                self.add(clause)
+            else:
+                # convert clause to several Clauses
+                print(clause)
+                self.clauses.append(Clause())
+                total = len(clause)
+                remaining = total
+                strikes = 0
+                while remaining > 0 and strikes < 3:
+                    print(self.clauses[-1].string())
+                    success = self.clauses[-1].add(clause[total - remaining])
+                    if success is True:
+                        remaining -= 1
+                        strikes = 0
+                        continue
+                    elif success is False:
+                        self.clauses.append(Clause())
+                        strikes += 1
+                        continue
+                    else:
+                        break
 
     def word_count(self):
         return sum(x.word_count() for x in self.clauses)
@@ -90,32 +116,50 @@ class Clause:
     """sub-unit of a sentence"""
 
     def __init__(self):
-        self.tokens = []
+        self.parts = []
         # Define clause structure from grammar
-        # For reference: grammar.C: (Conj, AdvP, NP, VP, IO, DO, AdvP)
+        # For reference: grammar.C: [Conj, AdvP, NP, VP, IO, DO, AdvP]
         self.model_structure = grammar.C
-        self.current_phrase = None
-        self.structure = grammar.empty_C
 
     def add(self, token):
         # add punctuation
         if token in string.punctuation:
-            self.tokens.append(token)
+            self.parts.append(token)
         # add word
         else:
-            # add token to current_phrase
-            if True:
-                self.tokens.append(token)
-                return True
-            else:
+            # add token to phrase within clause
+            for phrase in self.model_structure:
+                if grammar.addtophrase(token, phrase) is None:
+                    # add failed -- look in next phrase
+                    # if phrase is not empty add to clause parts
+                    if not phrase.isempty:
+                        self.parts.append(phrase)
+
+                    self.model_structure = self.model_structure[1:]
+                else:
+                    # add successful!
+                    print(phrase.string())
+                    phrase.isempty = False
+                    return True
+
+            if self.model_structure == grammar.empty_C:
+                print("clause is full")
                 return False
 
+            return None
 
     def word_count(self):
-        return sum([1 for x in self.tokens if x.isalnum()])
+        return sum([1 for x in self.parts if x not in string.punctuation])
 
     def string(self):
-        return " ".join(self.tokens)
+        # stringlist = []
+        # for x in self.parts:
+        #     if type(x) is str:
+        #         stringlist.append(x)
+        #     else:
+        #         stringlist.append(x.string())
+        # TODO
+        return self.parts
 
     def print(self):
         print(self.string())
@@ -123,12 +167,7 @@ class Clause:
     def printstats(self):
         print("Clause Stats:")
         print("\tWords: {}".format(self.word_count()))
-        print("\tStructure: {}".format(self.structure))
-
-
-# External Functions
-def newClause(part):
-    return Clause().add(part)
+        print("\tStructure: {}".format(self.model_structure))
 
 
 # Class Tests
@@ -148,14 +187,7 @@ def run_tests():
     p = Paragraph()
     for sentence in sentences:
         s = Sentence()
-        for clause in sentence:
-            c = Clause()
-            for part in clause:
-                c.add(part)
-
-            s.add(c)
-            c.print()
-            # c.printstats()
+        s.build(sentence)
 
         p.add(s)
         # s.print()
@@ -169,4 +201,4 @@ def run_tests():
     # t.printstats()
 
 
-# run_tests()
+run_tests()
