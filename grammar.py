@@ -139,13 +139,15 @@ class Mod(Phrase):
     def __init__(self):
         super().__init__()
         self.type = "Mod"
+        # self.value = PP() or AdvP() or AdjP()
 
 
 class NP(Phrase):
     def __init__(self):
         super().__init__()
         self.type = "NP"
-        self.value = [Det(), Mod(), N(), Mod()]
+        # self.value = [Det(), Mod(), N(), Mod()]
+        self.value = [Det(), AdvP(), AdjP(), N()]
 
 
 class VP(Phrase):
@@ -166,14 +168,16 @@ class AdjP(Phrase):
     def __init__(self):
         super().__init__()
         self.type = "AdjP"
-        self.value = [Mod(), Adj(), Mod()]
+        # self.value = [Mod(), Adj(), Mod()]
+        self.value = [Adj()]
 
 
 class AdvP(Phrase):
     def __init__(self):
         super().__init__()
         self.type = "AdvP"
-        self.value = [Mod(), Adv(), Mod()]
+        # self.value = [Mod(), Adv(), Mod()]
+        self.value = [Adv()]
 
 
 class DO(Phrase):
@@ -204,7 +208,7 @@ patterns = [
 # Clause Structure (Using clauses as roots, rather than sentences)
 class C:
     def __init__(self):
-        self.value = [Conj(), AdvP(), NP(), VP(), IO(), DO(), AdvP()]  # TODO Add Complement
+        self.value = [Conj(), AdvP(), NP(), PP(), VP(), IO(), DO(), AdvP()]  # TODO Add Complement
 
 empty_C = []
 
