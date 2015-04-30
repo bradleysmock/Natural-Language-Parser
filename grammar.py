@@ -200,8 +200,12 @@ patterns = [
     AdvP()
 ]
 
+
 # Clause Structure (Using clauses as roots, rather than sentences)
-C = [Conj(), AdvP(), NP(), VP(), IO(), DO(), AdvP()]  # TODO Add Complement
+class C:
+    def __init__(self):
+        self.value = [Conj(), AdvP(), NP(), VP(), IO(), DO(), AdvP()]  # TODO Add Complement
+
 empty_C = []
 
 # Sentence Structure (implemented as clause lists)
@@ -249,7 +253,6 @@ def addtophrase(word, phrase):
 def run_tests():
     test_sample = "The young boy in the chair is very hungry and eating a delicious hotdog quickly"
     test_tokens = test_sample.split()
-    structure = []
 
     print(test_sample)
     # print_grammar()
