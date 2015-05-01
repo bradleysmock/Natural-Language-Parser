@@ -3,13 +3,12 @@ from builtins import print
 __author__ = 'bradleyt79'
 
 import parser
-import lexical
 
 # menu parts and UI strings
 welcome = "\n*** Welcome to Bradley's Natural Language Parser ***"
 farewell = "Have a great day!"
 header = "\nPlease choose from these available options:"
-menuitems = [
+menu_items = [
     ("Parse Text to Screen", "Analyze syntax of a text you type in and display the results on screen",
      lambda: parse_input(True, True)),
     ("Parse Text to File", "Analyze syntax of a text you type in and store the results in a file",
@@ -19,7 +18,7 @@ menuitems = [
     ("Parse File to File", "Analyze syntax of a text you type in and store the results in a file",
      lambda: parse_input(False, False)),
     ("Exit", "", "")
-    ]
+]
 prompt_menu = "\nWhat would you like to do today? "
 prompt_text = "\nPlease enter the text you would like to process below. Use || to designate paragraph breaks.\n"
 prompt_file = "\nPlease enter the filename (including the path) of the file you would like to process below:\n"
@@ -33,13 +32,13 @@ output_header = "\nParser Results:"
 output_footer = "\nRemember, parsing natural language isn't an exact science!"
 
 
-def parse_input(fromscreen, toscreen):
+def parse_input(from_screen, to_screen):
     # get text to parse
-    if fromscreen is True:
+    if from_screen is True:
         text_to_parse = input(prompt_text)
     else:
-        filepath = input(prompt_file)
-        with open(filepath) as file:
+        file_path = input(prompt_file)
+        with open(file_path) as file:
             text_to_parse = file.read()
 
     # parse text
@@ -47,14 +46,14 @@ def parse_input(fromscreen, toscreen):
 
     # output parsed text
     output = "\n\n".join([output_header,
-                        parsed.filledstructurestring(),
-                        parsed.getstats(),
-                        output_footer])
-    if toscreen is True:
+                          parsed.filled_structure_string(),
+                          parsed.get_stats(),
+                          output_footer])
+    if to_screen is True:
         print(output)
     else:
-        filepath = input(prompt_fileout)
-        with open(filepath, 'w') as file:
+        file_path = input(prompt_fileout)
+        with open(file_path, 'w') as file:
             success = file.write(output)
             if success:
                 print(file_written)
@@ -66,29 +65,29 @@ def parse_input(fromscreen, toscreen):
 
 
 # setup menu
-menulines = []
+menu_lines = []
 count = 1
-for item in menuitems:
-    menulines.append("\t{}. {:25}{}".format(count, item[0], item[1]))
+for item in menu_items:
+    menu_lines.append("\t{}. {:25}{}".format(count, item[0], item[1]))
     count += 1
 
-menustring = "\n".join(menulines)
+menu_string = "\n".join(menu_lines)
 
 # output welcome and loop menu/prompt
 print(welcome)
 while True:
-    print(header, menustring, sep="\n")
+    print(header, menu_string, sep="\n")
     choice = input(prompt_menu)
     try:
         choice = int(choice)
     except ValueError:
         print(invalid)
         continue
-    if choice > len(menulines):
+    if choice > len(menu_lines):
         print(invalid)
         continue
-    elif choice == len(menulines):
+    elif choice == len(menu_lines):
         print(farewell)
         break
     else:
-        menuitems[choice-1][2]()
+        menu_items[choice - 1][2]()

@@ -11,10 +11,10 @@ type_dicts = [nltkdict, longman3000, customdict]
 
 
 # Simply returns the type of the word given it by querying the type_dicts until the word is found.
-def wordtype(word):
+def word_type(word):
     for type_dict in type_dicts:
-        if type_dict.wordtype(word) is not None:
-            return type_dict.wordtype(word)
+        if type_dict.word_type(word) is not None:
+            return type_dict.word_type(word)
         else:
             continue
 

@@ -24,12 +24,13 @@ import lexicon
 
 empty = ""
 
+
 # Base Classes
 class Terminal:
     def __init__(self):
         self.type = "Terminal"
         self.value = empty
-        self.isempty = True
+        self.is_empty = True
 
     def string(self):
         return self.value
@@ -42,11 +43,11 @@ class Terminal:
 
     def add(self, token):
         self.value = token
-        self.isempty = False
+        self.is_empty = False
         return self.value
 
-    def contains(self, wordtype):
-        if self.type == wordtype:
+    def contains(self, word_type):
+        if self.type == word_type:
             return True
         else:
             return False
@@ -56,7 +57,7 @@ class Phrase:
     def __init__(self):
         self.type = "Phrase"
         self.value = []
-        self.isempty = True
+        self.is_empty = True
 
     def string(self):
         return " ".join(x.string() for x in self.value)
@@ -68,10 +69,10 @@ class Phrase:
         return [x.string() for x in self.value]
 
     def add(self, token):
-        wordtype = lexicon.wordtype(token)
-        # TODO clean bug with subphrases
+        word_type = lexicon.word_type(token)
+        # TODO clean bug with sub-phrases
         for x in self.value:
-            if x.type == wordtype and x.value is empty:
+            if x.type == word_type and x.value is empty:
                 x.value = token
                 return self
             elif x.type[-1] == "P":
@@ -84,9 +85,9 @@ class Phrase:
 
         return None
 
-    def contains(self, wordtype):
+    def contains(self, word_type):
         for word in self.value:
-            if word.type == wordtype:
+            if word.type == word_type:
                 return True
             else:
                 continue
@@ -162,21 +163,21 @@ class NP(Phrase):
         super().__init__()
         self.type = "NP"
         # self.value = [Det(), Mod(), N(), Mod()]
-        self.value = [Det(), AdvP(), AdjP(), N()]
+        self.value = [Det(), Adv(), Adj(), N()]
 
 
 class VP(Phrase):
     def __init__(self):
         super().__init__()
         self.type = "VP"
-        self.value = [Aux(), V()]
+        self.value = [Aux(), V(), V()]
 
 
 class PP(Phrase):
     def __init__(self):
         super().__init__()
         self.type = "PP"
-        self.value = [Prep(), NP()]
+        self.value = [Prep(), Det(), Adv(), Adj(), N()]
 
 
 class AdjP(Phrase):
@@ -194,7 +195,7 @@ class AdvP(Phrase):
         # self.value = [Mod(), Adv(), Mod()]
         self.value = [Adv()]
 
-
+# Future expansion -- DO and IO are included for future expandability
 class DO(Phrase):
     def __init__(self):
         super().__init__()
@@ -237,10 +238,10 @@ def print_grammar():
         print(pattern)
 
 
-def findphrase(word, phrasebank):
-    wordtype = lexicon.wordtype(word)
-    for phrase in phrasebank:
-        if phrase.contains(wordtype):
+def find_phrase(word, phrase_bank):
+    word_type = lexicon.word_type(word)
+    for phrase in phrase_bank:
+        if phrase.contains(word_type):
             return phrase
         else:
             continue
@@ -248,15 +249,15 @@ def findphrase(word, phrasebank):
     return None
 
 
-def addtophrase(word, phrase):
-    wordtype = lexicon.wordtype(word)
-    if wordtype == phrase.type:
+def add_to_phrase(word, phrase):
+    word_type = lexicon.word_type(word)
+    if word_type == phrase.type:
         # update phrase value
         phrase.add(word)
         return phrase
     elif type(phrase.value) is list:
-        for subphrase in phrase.value:
-            if wordtype == subphrase.type:
+        for sub_phrase in phrase.value:
+            if word_type == sub_phrase.type:
                 # update phrase value
                 phrase.add(word)
                 return phrase
@@ -270,24 +271,24 @@ def addtophrase(word, phrase):
 
 # Grammar Tests
 def run_tests():
-    test_sample = "The young boy in the chair is very hungry and eating a delicious hotdog quickly"
+    test_sample = "The young boy in the chair is very hungry and eating a delicious hot-dog quickly"
     test_tokens = test_sample.split()
 
     print(test_sample)
     # print_grammar()
 
     for token in test_tokens:
-        # find wordtype
-        wordtype = lexicon.wordtype(token)
-        # print(wordtype)
+        # find word_type
+        word_type = lexicon.word_type(token)
+        # print(word_type)
 
         # find phrase
-        found_phrase = findphrase(token, patterns)
-        print("{}: {} - {}: {}".format(token, wordtype, found_phrase.type, found_phrase.structure()))
+        found_phrase = find_phrase(token, patterns)
+        print("{}: {} - {}: {}".format(token, word_type, found_phrase.type, found_phrase.structure()))
 
         # add to phrase
-        new_phrase = addtophrase(token, found_phrase)
-        print("{}: {} - {}".format(token, wordtype, new_phrase.parts()))
+        new_phrase = add_to_phrase(token, found_phrase)
+        print("{}: {} - {}".format(token, word_type, new_phrase.parts()))
 
 
 # run_tests()

@@ -44,7 +44,8 @@ def most_common(word_list, number, stats):
 
 def most_common_string(word_list, number, stats):
     if stats == 3:  # frequency and percentage
-        output = ["{:4} - {:7.2%} : {}".format(word[0], word[1], word[2]) for word in most_common(word_list, number, stats)]
+        output = ["{:4} - {:7.2%} : {}".format(word[0], word[1], word[2])
+                  for word in most_common(word_list, number, stats)]
     elif stats == 2:  # percentage only
         output = ["{:7.2%} : {}".format(word[0], word[1]) for word in most_common(word_list, number, stats)]
     else:  # stats == 1  frequency only
@@ -53,11 +54,11 @@ def most_common_string(word_list, number, stats):
     return "\n".join(output)
 
 
-def getstats(word_list):
+def get_stats(word_list):
     return "\n".join(["Lexical Report",
                       "Number of Words: {}".format(len(word_list)),
                       "Word Diversity: {}".format(word_diversity_string(word_list, 2)),
-                      "Most Common Words:\n{}".format(most_common_string(word_list, 25, 3))])
+                      "Most Common Words:\n{}".format(most_common_string(word_list, 10, 3))])
 
 
 # Lexical Tests
@@ -72,6 +73,6 @@ def run_tests():
     # print(word_diversity(tokens))
     print(word_diversity_string(tokens, 2))
     print(most_common(tokens, 10, 3))
-    print(getstats(tokens))
+    print(get_stats(tokens))
 
 # run_tests()

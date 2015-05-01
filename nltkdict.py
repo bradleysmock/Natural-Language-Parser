@@ -5,7 +5,7 @@ from string import punctuation
 
 
 # Simply returns the type of the word given it.
-def wordtype(word):
+def word_type(word):
     pos = pos_tag([word])[0][1]
     if pos in punctuation:
         return None
@@ -61,13 +61,13 @@ def wordtype(word):
 # NLTKdict Tests
 
 
-def runtests():
+def run_tests():
     from samples import tokens1, tokens2
     for word in tokens1:
-        print(wordtype(word))
+        print(word_type(word))
 
     for word in tokens2:
-        print(wordtype(word))
+        print(word_type(word))
 
 
-# runtests()
+# run_tests()

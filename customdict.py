@@ -5,7 +5,7 @@ __author__ = 'bradleyt79'
 
 
 # Simply returns the type of the word given it.
-def wordtype(word):
+def word_type(word):
     for key in dictionary:
         if key[0] == word or key[0] == word.lower():
             return key[1]
@@ -31,6 +31,6 @@ dictionary = {
     ('is', 'V'),
     ('eating', 'V'),
     ('delicious', 'Adj'),
-    ('hotdog', 'N'),
+    ('hot-dog', 'N'),
     ('genius', 'N')
 }

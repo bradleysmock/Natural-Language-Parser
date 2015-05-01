@@ -1,9 +1,6 @@
 __author__ = 'bradleyt79'
 
-import re
-import string
 import parser_classes
-import lexicon
 import samples
 
 # Global Constants
@@ -27,52 +24,52 @@ def tokenize(text):
         return text.split()
 
 
-def splitby(tokens, splitlist):
-    returnlist = []
+def split_by(tokens, split_list):
+    return_list = []
     part = []
     for n in range(0, len(tokens)):
         token = tokens[n]
         if n == len(tokens) - 1:
             part.append(token)
-            returnlist.append(part)
-        elif token in splitlist:
+            return_list.append(part)
+        elif token in split_list:
             part.append(token)
-            returnlist.append(part)
+            return_list.append(part)
             part = []
         else:
             part.append(token)
             
-    return returnlist
+    return return_list
 
 
-def splitintosentences(tokens):
-    return splitby(tokens, end_sentence)
+def split_into_sentences(tokens):
+    return split_by(tokens, end_sentence)
 
 
-def splitintoparagraphs(tokens):
-    return splitby(tokens, end_paragraph)
+def split_into_paragraphs(tokens):
+    return split_by(tokens, end_paragraph)
 
 
 # Returns a Text object from a string
 def parse(text):
-    newText = parser_classes.Text()
+    new_text = parser_classes.Text()
     tokens = tokenize(text)
-    paragraphs = splitintoparagraphs(tokens)
+    paragraphs = split_into_paragraphs(tokens)
     for paragraph in paragraphs:
-        newParagraph = parser_classes.Paragraph()
-        sentences = splitintosentences(paragraph)
+        new_paragraph = parser_classes.Paragraph()
+        sentences = split_into_sentences(paragraph)
         for sentence in sentences:
             # remove paragraph ends
             if sentence[0] in end_paragraph:
                 continue
             else:
-                newSentence = parser_classes.Sentence()
-                newSentence.build(sentence)
-                newParagraph.add(newSentence)
+                new_sentence = parser_classes.Sentence()
+                new_sentence.build(sentence)
+                new_paragraph.add(new_sentence)
 
-        newText.add(newParagraph)
+        new_text.add(new_paragraph)
 
-    return newText
+    return new_text
 
 
 # Tests
@@ -84,20 +81,20 @@ def test_parse(text):
     parsing = parse(text)
 
     parsing.print()
-    parsing.printstats()
+    parsing.print_stats()
 
     pn = 1
     for p in parsing.paragraphs:
         print("\nParagraph {}".format(pn))
         p.print()
-        p.printstats()
+        p.print_stats()
         print("")
 
         sn = 1
         for s in p.sentences:
             print("Sentence {} - {}".format(sn, s.string()))
-            print(s.structurestring())
-            s.printstats()
+            print(s.structure_string())
+            s.print_stats()
             print("")
 
             sn += 1
