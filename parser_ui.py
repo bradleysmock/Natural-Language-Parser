@@ -3,6 +3,7 @@ from builtins import print
 __author__ = 'bradleyt79'
 
 import parser
+import lexical
 
 # menu parts and UI strings
 welcome = "\n*** Welcome to Bradley's Natural Language Parser ***"

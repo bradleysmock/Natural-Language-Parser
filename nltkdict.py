@@ -2,6 +2,7 @@ __author__ = 'bradleyt79'
 
 from nltk import pos_tag
 
+
 # Simply returns the type of the word given it.
 def wordtype(word):
     return pos_tag([word])
@@ -15,4 +16,4 @@ def runtests():
         print(wordtype(word))
 
 
-runtests()
+# runtests()
