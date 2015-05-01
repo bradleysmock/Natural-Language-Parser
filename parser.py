@@ -110,4 +110,4 @@ def run_tests():
     test_parse(samples.text1)
 
 
-run_tests()
+# run_tests()

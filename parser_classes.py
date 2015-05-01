@@ -263,14 +263,14 @@ class Clause:
 # Parser Class Tests
 def run_tests():
     sentences = [
-        ['The', 'man', 'in', 'the', 'mask', 'screamed', '.']#,
-        # [['The', 'woman', 'laughed'], ['.']],
-        # [['The', 'boy', 'cried'], ['.']],
-        # [['The', 'girl', 'in', 'the', 'petticoat', 'smiled'], ['.']],
-        # [['The', 'dog', 'with', 'a', 'bone', 'whined'], ['.']],
-        # [['The', 'cat', 'mewed'], ['.']],
-        # [['Dr', 'John', 'said'], ['hello'], ['.']],
-        # [['Mr', 'Kim', 'gave', 'Mrs', 'Kim', 'a', 'gift'], ['.']]
+        ['The', 'man', 'in', 'the', 'mask', 'screamed', '.'],
+        ['The', 'woman', 'laughed', '.'],
+        ['The', 'boy', 'cried', '.'],
+        ['The', 'girl', 'in', 'the', 'petticoat', 'smiled', '.'],
+        ['The', 'dog', 'with', 'a', 'bone', 'whined', '.'],
+        ['The', 'cat', 'mewed', '.'],
+        ['Dr', 'John', 'said', 'hello', '.'],
+        ['Mr', 'Kim', 'gave', 'Mrs', 'Kim', 'a', 'gift', '.']
     ]
 
     t = Text()
