@@ -38,7 +38,7 @@ class Text:
         print(self.filled_structure_string())
 
     def get_stats(self):
-        return "\n".join(["Text Stats:",
+        return "\n\n".join(["Text Stats:",
                           "\tParagraphs: {}".format(self.paragraph_count()),
                           "\tSentences: {}".format(self.sentence_count()),
                           "\tWords: {}".format(self.word_count()),
