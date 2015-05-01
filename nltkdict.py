@@ -10,13 +10,44 @@ def wordtype(word):
     if pos in punctuation:
         return None
     else:
+        # NLTK's POS Tagger is much more robust than my parser currently can handle.
+        # Therefore, simplify the POS before passing to the parser.
         conversion = [
+            ["CC", "Conj"],
+            ["CD", "N"],
             ["DT", "Det"],
-            ["NN", "N"],
+            ["EX", "N"],
+            ["FW", "N"],
             ["IN", "Prep"],
-            ["VBD", "V"],
+            ["JJ", "Adj"],
+            ["JJR", "Adj"],
+            ["JJS", "Adj"],
+            ["LS", "N"],
+            ["MD", "Aux"],
+            ["NN", "N"],
             ["NNP", "N"],
-            ["NNS", "N"]
+            ["NNPS", "N"],
+            ["NNS", "N"],
+            ["PDT", "Det"],
+            ["POS", "Adj"],
+            ["PRP", "N"],
+            ["PRP$", "N"],
+            ["RB", "Adv"],
+            ["RBR", "Adv"],
+            ["RBS", "Adv"],
+            ["RP", "Prep"],
+            ["TO", "Prep"],
+            ["UH", "N"],
+            ["VB", "V"],
+            ["VBD", "V"],
+            ["VBG", "V"],
+            ["VBN", "V"],
+            ["VBP", "V"],
+            ["VBZ", "V"],
+            ["WDT", "Det"],
+            ["WP", "Pron"],
+            ["WP$", "Pron"],
+            ["WRB", "Adv"],
         ]
         for x in conversion:
             if pos == x[0]:
@@ -33,6 +64,9 @@ def wordtype(word):
 def runtests():
     from samples import tokens1, tokens2
     for word in tokens1:
+        print(wordtype(word))
+
+    for word in tokens2:
         print(wordtype(word))
 
 

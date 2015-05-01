@@ -7,7 +7,7 @@ import customdict
 
 # Local dictionaries for testing
 type_dicts = [nltkdict, longman3000, customdict]
-freq_dicts = [nltkdict, longman3000]
+# Future expansion -- freq_dicts = [nltkdict, longman3000]
 
 
 # Simply returns the type of the word given it by querying the type_dicts until the word is found.
