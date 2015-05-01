@@ -5,7 +5,8 @@ from nltk import pos_tag
 
 # Simply returns the type of the word given it.
 def wordtype(word):
-    return pos_tag([word])
+    # return pos_tag([word])
+    return None
 
 # NLTKdict Tests
 

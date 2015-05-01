@@ -1,0 +1,11 @@
+
+Parser Results:
+
+[('NP', 'The   man'), ('VP', ' is')] [('NP', 'a   '), ('VP', ' fish'), '.'] [('NP', 'The   woman'), ('VP', ' is')] [('NP', 'a   cat'), '.']
+
+Text Stats:
+	Paragraphs: 1
+	Sentences: 2
+	Words: 10
+
+
