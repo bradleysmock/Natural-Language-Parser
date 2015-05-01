@@ -1,0 +1,37 @@
+Welcome to Bradley's Natural Language Parser!
+
+Instructions
+
+Prior to running the parser, please be sure that you have a Python 3.x interpreter and the NLTK installed on your system. If you do not, please refer to the following websites for the correct installation instructions for your system:
+www.python.org
+www.nltk.org
+
+Once Python and NLTK are installed, go to the command line (e.g. in Terminal).
+
+At the command line, navigate to the folder containing the project files.
+
+Open the project by typing the Python command followed by runparser.py, e.g.:
+    python3 runparser.py
+
+The project menu will present you with four options for parsing and one to exit the program:
+    Parse Text to Screen: Manually enter some text and display the parsed text on the screen.
+    Parse Text to File: Manually enter some text and save the parsed text in a file.
+    Parse File to Screen: Read text from a file and display the parsed text on the screen.
+    Parse File to File: Read text from a file and save the parsed text in a file.
+
+Choose your desired menu option by entering the corresponding number.
+
+If you chose to manually enter some text:
+    Type the text in at the prompt.
+    Use || to designate the separation between paragraphs.
+    Press enter when finished.
+
+If you chose to read text from a file:
+    Enter the file path and name, including the extension, of the file containing the text you wish to parse when prompted.
+
+If you chose to save the parsed text to a file:
+    Enter the file path and name, including the extension, of the file in which you wish to save the parsed text when prompted.
+
+After the results are displayed, press enter to return to the menu.
+
+Notice that the parser displays any errors it had, e.g. it couldn’t find the word type, on screen during the parsing.
