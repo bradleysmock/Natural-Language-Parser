@@ -11,86 +11,68 @@ end_paragraph = ["\n", "||"]
 end_sentence = [".", "?", "!"]
 end_clause = [",", ":", ";", "- ", "' ", " '", '"', "(", ")"]
 sub = end_sentence + end_clause
-# TODO needs to be much more robust eventually
-abbrev = ["Dr", "Mr", "Mrs"]
+# Future expansion: abbrev list needs to be much more robust
+abbrev = ["Dr.", "Mr.", "Mrs.", "etc.", "e.g.", "i.e."]
 
+
+# Breaks a text (string) into tokens.
 def tokenize(text):
-        # Maybe slow...
-        # For reference: sub = [".", "?", "!", ",", ":", ";", "- ", "'", '"', "(", ")"]
+        # Future expansion: revise for better speed and efficiency
+        for x in abbrev:
+            text = text.replace("{}".format(x), "{}".format(x[:-1]))
+
         for x in sub:
             text = text.replace("{}".format(x), " {} ".format(x))
 
-        # Note: returns Mr. as ['Mr', '.']
         return text.split()
+
+
+def splitby(tokens, splitlist):
+    returnlist = []
+    part = []
+    for n in range(0, len(tokens)):
+        token = tokens[n]
+        if n == len(tokens) - 1:
+            part.append(token)
+            returnlist.append(part)
+        elif token in splitlist:
+            part.append(token)
+            returnlist.append(part)
+            part = []
+        else:
+            part.append(token)
+            
+    return returnlist
+
+
+def splitintosentences(tokens):
+    return splitby(tokens, end_sentence)
+
+
+def splitintoparagraphs(tokens):
+    return splitby(tokens, end_paragraph)
+
 
 # Returns a Text object from a string
 def parse(text):
-    t = parser_classes.Text()
+    newText = parser_classes.Text()
     tokens = tokenize(text)
-
-    # initialize
-    p = parser_classes.Paragraph()
-    s = parser_classes.Sentence()
-    c = parser_classes.Clause()
-
-    # analyze tokens
-    for n in range(0, len(tokens)):
-        token = tokens[n]
-        # check for last token
-        if n == len(tokens) - 1:
-            # add token as new clause (assumes end punctuation)
-            s.add(c)
-            c = parser_classes.Clause()
-            c.add(token)
-            s.add(c)
-            p.add(s)
-            t.add(p)
-            break
-        # check for end of paragraph
-        elif token in end_paragraph:
-            # add paragraph to Text, omitting token
-            s.add(c)
-            s.print()
-            p.add(s)
-            p.print()
-            t.add(p)
-            # reinitialize p, s, c
-            p = parser_classes.Paragraph()
-            s = parser_classes.Sentence()
-            c = parser_classes.Clause()
-        else:
-            # check for punctuation
-            if token in string.punctuation:
-                # check for end of sentence/clause
-                if token in end_sentence:
-                    # check for abbreviations
-                    if tokens[n-1] in abbrev:
-                        c.add(token)
-                    else:
-                        # end sentence
-                        c.add(token)
-                        s.add(c)
-                        p.add(s)
-                        # reinitialize s, c
-                        s = parser_classes.Sentence()
-                        c = parser_classes.Clause()
-                elif token in end_clause:
-                    # end clause
-                    s.add(c)
-                    # add token as separate clause in s
-                    s.add(parser_classes.Clause().add(token))
-                    # reinitialize c
-                    c = parser_classes.Clause()
-                else:
-                    # build clause
-                    c.add(token)
-            # if word (not punctuation)
+    paragraphs = splitintoparagraphs(tokens)
+    for paragraph in paragraphs:
+        newParagraph = parser_classes.Paragraph()
+        sentences = splitintosentences(paragraph)
+        for sentence in sentences:
+            # remove paragraph ends
+            if sentence[0] in end_paragraph:
+                continue
             else:
-                # build clause
-                c.add(token)
+                newSentence = parser_classes.Sentence()
+                newSentence.build(sentence)
+                newParagraph.add(newSentence)
 
-    return t
+        newText.add(newParagraph)
 
+    return newText
 
 # Tests
 def test_tokenize(text):
@@ -100,19 +82,22 @@ def test_tokenize(text):
 def test_parse(text):
     parsing = parse(text)
 
-    # parsing.print()
-    # parsing.printstats()
+    parsing.print()
+    parsing.printstats()
 
     pn = 1
     for p in parsing.paragraphs:
         print("\nParagraph {}".format(pn))
-        # p.print()
-        # p.printstats()
+        p.print()
+        p.printstats()
+        print("")
 
         sn = 1
         for s in p.sentences:
             print("Sentence {} - {}".format(sn, s.string()))
-            # s.printstats()
+            print(s.structurestring())
+            s.printstats()
+            print("")
 
             sn += 1
 

@@ -9,6 +9,8 @@ type_dicts = [longman3000, customdict]
 freq_dicts = [longman3000]
 # TODO link to NLTK for dictionaries
 
+
+# Simply returns the type of the word given it by querying the type_dicts until the word is found.
 def wordtype(word):
     for type_dict in type_dicts:
         if type_dict.wordtype(word) is not None:
@@ -17,6 +19,6 @@ def wordtype(word):
             continue
 
     print("Word type not found. Please extend dictionaries to include {}.".format(word))
-    # TODO in a future update add function to dynamically add these into the customdict
+    # Future expansion: add function to dynamically add these into the customdict
     return None
 

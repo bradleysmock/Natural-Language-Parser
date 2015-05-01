@@ -71,45 +71,43 @@ class Sentence:
     def add(self, clause):
         return self.clauses.append(clause)
 
-    def build(self, clauselist):
+    def buildfromclauses(self, clauselist):
         # print(clauselist)
         for clause in clauselist:
             if type(clause) is Clause:
                 # assumes the clause is complete
                 self.add(clause)
             else:
-                # convert clause to several Clauses
-                total = len(clause)
-                remaining = total
-                # Strikes prevent against infinite loops of "Full" clauses
+                # convert to Clause(s)
+                self.build(clause)
+
+    # converts a list of tokens to one or more Clauses
+    def build(self, tokens):
+        c = Clause()
+        total = len(tokens)
+        remaining = len(tokens)
+        strikes = 0
+        while remaining > 0 and strikes < 2:
+            # Add token to clause
+            success = c.add(tokens[total - remaining])
+            if success is True:
+                remaining -= 1
                 strikes = 0
+                if remaining == 0:
+                    # future version: revise this because it's clumsy but works
+                    # add partial final phrase if any
+                    c.addfinal()
+                    self.clauses.append(c)
+            elif success is False:
+                # Clause is full, so add to self.clauses and start new clause
+                self.clauses.append(c)
                 c = Clause()
-                while remaining > 0 and strikes < 2:
-                    # Add phrase to clause
-                    # print("Making Clause {}".format(c))
-                    success = c.add(clause[total - remaining])
-                    if success is True:
-                        remaining -= 1
-                        strikes = 0
-                        if remaining == 0:
-                            # TODO clumsy but works
-                            #  add partial final phrase if any
-                            c.addfinal()
-                            self.clauses.append(c)
-                    elif success is False:
-                        # Clause is full, so add to self.clauses and start new clause
-                        self.clauses.append(c)
-                        c = Clause()
-                        # print("\tCreating new clause: {}".format(c))
-                        strikes += 1
-                    else:
-                        print("Error in S.build with {}".format(clause))
-                        break
+                # print("\tCreating new clause: {}".format(c))
+                strikes += 1
+            else:
+                print("Error in S.build with {}".format(tokens[total-remaining]))
+                break
 
-                # self.clauses.append(c)
-
-    def structure(self):
-        return [x.type() for x in self.clauses]
 
     def word_count(self):
         return sum(x.word_count() for x in self.clauses)
@@ -119,6 +117,12 @@ class Sentence:
 
     def clausestrings(self):
         return [clause.string() for clause in self.clauses]
+
+    def structure(self):
+        return [x.structure() for x in self.clauses]
+
+    def structurestring(self):
+        return [x.filledstructure() for x in self.clauses]
 
     def print(self):
         print(self.string())
@@ -143,6 +147,10 @@ class Clause:
     def add(self, token):
         # add punctuation
         if token in string.punctuation:
+            if not self.finalphrase.isempty:
+                self.parts.append(self.finalphrase)
+                self.finalphrase = ""
+
             self.parts.append(token)
             return True
         # add word
@@ -178,16 +186,6 @@ class Clause:
     def word_count(self):
         return self.num_words
 
-    def structure(self):
-        partslist = []
-        for part in self.parts:
-            if type(part) is str:
-                partslist.append(part)
-            else:
-                partslist.append(part.type)
-
-        return partslist
-
     def string(self):
         stringlist = []
         for x in self.parts:
@@ -198,8 +196,34 @@ class Clause:
 
         return " ".join(stringlist)
 
+    def structure(self):
+        partslist = []
+        for part in self.parts:
+            if type(part) is str:
+                partslist.append(part)
+            else:
+                partslist.append(part.type)
+
+        return partslist
+
+    def filledstructure(self):
+        partslist = []
+        for part in self.parts:
+            if type(part) is str:
+                partslist.append(part)
+            else:
+                partslist.append((part.type, part.string()))
+
+        return partslist
+
     def print(self):
         print(self.string())
+
+    def printstructure(self):
+        print(self.structure())
+
+    def printfilledstructure(self):
+        print(self.filledstructure())
 
     def printstats(self):
         print("Clause Stats:")
@@ -207,17 +231,17 @@ class Clause:
         print("\tStructure: {}".format(self.structure()))
 
 
-# Class Tests
+# Parser Class Tests
 def run_tests():
     sentences = [
-        [['The', 'man', 'in', 'the', 'mask', 'screamed'], ['.']],
-        [['The', 'woman', 'laughed'], ['.']],
-        [['The', 'boy', 'cried'], ['.']],
-        [['The', 'girl', 'in', 'the', 'petticoat', 'smiled'], ['.']],
-        [['The', 'dog', 'with', 'a', 'bone', 'whined'], ['.']],
-        [['The', 'cat', 'mewed'], ['.']],
-        [['Dr', '.', 'John', 'said'], ['hello'], ['.']],
-        [['Mr', '.', 'Kim', 'gave', 'Mrs', '.', 'Kim', 'a', 'gift'], ['.']]
+        ['The', 'man', 'in', 'the', 'mask', 'screamed', '.']#,
+        # [['The', 'woman', 'laughed'], ['.']],
+        # [['The', 'boy', 'cried'], ['.']],
+        # [['The', 'girl', 'in', 'the', 'petticoat', 'smiled'], ['.']],
+        # [['The', 'dog', 'with', 'a', 'bone', 'whined'], ['.']],
+        # [['The', 'cat', 'mewed'], ['.']],
+        # [['Dr', 'John', 'said'], ['hello'], ['.']],
+        # [['Mr', 'Kim', 'gave', 'Mrs', 'Kim', 'a', 'gift'], ['.']]
     ]
 
     t = Text()
@@ -227,7 +251,9 @@ def run_tests():
         s.build(sentence)
         # for clause in s.clauses:
         #    clause.printstats()
-        print("\nSentence: {}\n\t{}".format(s.string(), s.clausestrings()))
+        print("\nSentence: {}".format(s.string()))
+        print("\tStructure: {}".format(s.structure()))
+        print("\tStructure Filled: {}".format(s.structurestring()))
         s.printstats()
         p.add(s)
 
@@ -239,4 +265,4 @@ def run_tests():
     t.printstats()
 
 
-run_tests()
+# run_tests()

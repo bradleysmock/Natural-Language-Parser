@@ -1,19 +1,23 @@
 __author__ = 'bradleyt79'
 
 # Functions for accessing this specific dictionary
+
+
+# Simply returns the type of the word given it
 def wordtype(word):
-    # TODO after reformat dictionary - if word in dictionary.keys():
     for key in dictionary:
         if key[0] == word:
             return key[1]
 
+
+# Returns the frequency of the word as defined in the dictionary.
 def frequency(word):
     for key in dictionary:
         if key[0] == word:
             return dictionary[key]
 
 # The dictionary itself
-# TODO reformat dictionary to {word: {part1: freq, part2: freq}
+# Future expansion: consider reformatting dictionary to {word: {part1: freq, part2: freq}
 dictionary = {
     ('abandon', 'V'): ('--', 'W3'),
     ('ability', 'N'): ('S2', 'W1'),

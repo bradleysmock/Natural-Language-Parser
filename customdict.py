@@ -1,18 +1,11 @@
 __author__ = 'bradleyt79'
 
-import os
-
-def opendict():
-    with open("customdict", 'r') as f:
-        return f.readlines()
-
-def add(word):
-    entries = opendict()
-    # TODO finish!
+# Future expansion notes:
+# Needs a way to expand the dictionary while running the program.
 
 
+# Simply returns the type of the word given it.
 def wordtype(word):
-    # TODO after reformat dictionary - if word in dictionary.keys():
     for key in dictionary:
         if key[0] == word or key[0] == word.lower():
             return key[1]
@@ -28,11 +21,11 @@ dictionary = {
     ('a', 'Det'),
     ('whined', 'V'),
     ('mewed', 'V'),
-    ('Dr', 'N'),
+    ('Dr', 'Adj'),
     ('John', 'N'),
     ('said', 'V'),
-    ('Mr', 'N'),
-    ('Mrs', 'N'),
+    ('Mr', 'Adj'),
+    ('Mrs', 'Adj'),
     ('Kim', 'N'),
     ('gave', 'V'),
     ('is', 'V'),

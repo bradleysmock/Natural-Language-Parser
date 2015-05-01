@@ -1,7 +1,9 @@
 __author__ = 'bradleyt79'
 
-t1 = """The man in the mask screamed. The woman laughed. The boy cried.
-The girl in the petticoat smiled. The dog with a bone whined. The cat mewed.
+# Samples for testing the parser
+
+t1 = """The man in the mask screamed. The woman laughed. The boy cried. ||
+The girl in the petticoat smiled. The dog with a bone whined. The cat mewed. ||
 Dr. John said hello. Mr. Kim gave Mrs. Kim a gift."""
 
 t2 = """In a village of La Mancha, the name of which I have no desire to call to mind, there lived not long since one of those gentlemen that keep a lance in the lance-rack, an old buckler, a lean hack, and a greyhound for coursing. An olla of rather more beef than mutton, a salad on most nights, scraps on Saturdays, lentils on Fridays, and a pigeon or so extra on Sundays, made away with three-quarters of his income. The rest of it went in a doublet of fine cloth and velvet breeches and shoes to match for holidays, while on week-days he made a brave figure in his best homespun. He had in his house a housekeeper past forty, a niece under twenty, and a lad for the field and market-place, who used to saddle the hack as well as handle the bill-hook. The age of this gentleman of ours was bordering on fifty; he was of a hardy habit, spare, gaunt-featured, a very early riser and a great sportsman. They will have it his surname was Quixada or Quesada (for here there is some difference of opinion among the authors who write on the subject), although from reasonable conjectures it seems plain that he was called Quexana. This, however, is of but little importance to our tale; it will be enough not to stray a hair's breadth from the truth in the telling of it.

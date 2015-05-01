@@ -2,7 +2,7 @@ __author__ = 'bradleyt79'
 
 import lexicon
 
-# Note
+# Note on Grammar Contents:
 # Five English phrase types taken from Dictionary of English Grammar by Leech et al.
 # Noun Phrase ​​​(det) + (modifier) + noun + (modifier)
 # Verb Phrase ​​​(auxiliary) + verb
@@ -12,6 +12,15 @@ import lexicon
 #
 # Clause​​​​ (conjunction) + (adverbial) + noun phrase + verb phrase + (indirect object)
 # + (direct object) + (complement) + (adverbial)
+
+# Note on Grammar Structure:
+# The original inspiration was a CNF ( A -> B C) format of a CFG, although I have converted
+# that to a series of classes that retain the A -> B C structure within their values. Still,
+# this change means that any CNF CFGs would need to be modified to work with this parser.
+
+# For Future Improvement:
+# Modifiers and complements were taken out to simplify implementation.
+# Needs better handling of abbreviations, e.g. Dr.
 
 empty = ""
 
@@ -60,10 +69,16 @@ class Phrase:
 
     def add(self, token):
         wordtype = lexicon.wordtype(token)
+        # TODO clean bug with subphrases
         for x in self.value:
             if x.type == wordtype and x.value is empty:
                 x.value = token
                 return self
+            elif x.type[-1] == "P":
+                if x.add(token) is None:
+                    continue
+                else:
+                    return self
             else:
                 continue
 
@@ -208,7 +223,7 @@ patterns = [
 # Clause Structure (Using clauses as roots, rather than sentences)
 class C:
     def __init__(self):
-        self.value = [Conj(), AdvP(), NP(), PP(), VP(), IO(), DO(), AdvP()]  # TODO Add Complement
+        self.value = [Conj(), AdvP(), NP(), PP(), VP(), IO(), DO(), AdvP()]
 
 empty_C = []
 
