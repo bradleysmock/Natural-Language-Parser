@@ -10,23 +10,59 @@ farewell = "Have a great day!"
 header = "\nPlease choose from these available options:"
 menuitems = [
     ("Parse Text to Screen", "Analyze syntax of a text you type in and display the results on screen",
-     lambda: parse_input()),
+     lambda: parse_input(True, True)),
     ("Parse Text to File", "Analyze syntax of a text you type in and store the results in a file",
-     lambda: print("2 TODO")),
+     lambda: parse_input(True, False)),
     ("Parse File to Screen", "Analyze syntax of a text file and display the results on screen",
-     lambda: print("3 TODO")),
+     lambda: parse_input(False, True)),
     ("Parse File to File", "Analyze syntax of a text you type in and store the results in a file",
-     lambda: print("4 TODO")),
+     lambda: parse_input(False, False)),
     ("Exit", "", "")
     ]
 prompt_menu = "\nWhat would you like to do today? "
 prompt_text = "\nPlease enter the text you would like to process below. Use || to designate paragraph breaks.\n"
-prompt_file = "\nPlease enter the path (directory/filename) to the file you would like to process below:\n"
+prompt_file = "\nPlease enter the filename (including the path) of the file you would like to process below:\n"
+prompt_fileout = "\nPlease enter the filename (including the path) of the file you would like to save to:\n"
+pause = "\nPress enter to continue.\n"
+invalid = "\nInvalid entry. Please try again.\n"
+file_written = "\nFile written successfully.\n"
+file_read = "\nFile read successfully.\n"
+file_error = "\nSorry, could not write to/read from file.\n"
+output_header = "\nParser Results:"
+output_footer = "\nRemember, parsing natural language isn't an exact science!"
 
 
-def parse_input():
-    text = input(prompt_text)
-    parser.parse(text)
+def parse_input(fromscreen, toscreen):
+    # get text to parse
+    if fromscreen is True:
+        text_to_parse = input(prompt_text)
+    else:
+        filepath = input(prompt_file)
+        with open(filepath) as file:
+            text_to_parse = file.read()
+
+    # parse text
+    parsed = parser.parse(text_to_parse)
+
+    # output parsed text
+    output = "\n\n".join([output_header,
+                        parsed.filledstructurestring(),
+                        parsed.getstats(),
+                        output_footer])
+    if toscreen is True:
+        print(output)
+    else:
+        filepath = input(prompt_fileout)
+        with open(filepath, 'w') as file:
+            success = file.write(output)
+            if success:
+                print(file_written)
+            else:
+                print(file_error)
+
+    # pause before continuing
+    input(pause)
+
 
 # setup menu
 menulines = []
@@ -41,8 +77,16 @@ menustring = "\n".join(menulines)
 print(welcome)
 while True:
     print(header, menustring, sep="\n")
-    choice = int(input(prompt_menu))
-    if choice == len(menulines):
+    choice = input(prompt_menu)
+    try:
+        choice = int(choice)
+    except ValueError:
+        print(invalid)
+        continue
+    if choice > len(menulines):
+        print(invalid)
+        continue
+    elif choice == len(menulines):
         print(farewell)
         break
     else:

@@ -74,6 +74,7 @@ def parse(text):
 
     return newText
 
+
 # Tests
 def test_tokenize(text):
     print(tokenize(text))
@@ -104,5 +105,9 @@ def test_parse(text):
         pn += 1
 
 
-# test_tokenize(samples.t2)
-test_parse(samples.t1)
+def run_tests():
+    test_tokenize(samples.text1)
+    test_parse(samples.text1)
+
+
+# run_tests()

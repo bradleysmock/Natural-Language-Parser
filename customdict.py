@@ -31,5 +31,6 @@ dictionary = {
     ('is', 'V'),
     ('eating', 'V'),
     ('delicious', 'Adj'),
-    ('hotdog', 'N')
+    ('hotdog', 'N'),
+    ('genius', 'N')
 }

@@ -25,14 +25,23 @@ class Text:
     def string(self):
         return " ".join(x.string() for x in self.paragraphs)
 
+    def filledstructurestring(self):
+        return " ".join(paragraph.filledstructurestring() for paragraph in self.paragraphs)
+
     def print(self):
         print(self.string())
 
+    def printfilledstructure(self):
+        print(self.filledstructurestring())
+
+    def getstats(self):
+        return "\n".join(["Text Stats:",
+                          "\tParagraphs: {}".format(self.paragraph_count()),
+                          "\tSentences: {}".format(self.sentence_count()),
+                          "\tWords: {}".format(self.word_count())])
+
     def printstats(self):
-        print("\nText Stats:")
-        print("\tParagraphs: {}".format(self.paragraph_count()))
-        print("\tSentences: {}".format(self.sentence_count()))
-        print("\tWords: {}".format(self.word_count()))
+        print(self.getstats())
 
 
 class Paragraph:
@@ -53,8 +62,17 @@ class Paragraph:
     def string(self):
         return " ".join(sentence.string() for sentence in self.sentences)
 
+    def structurestring(self):
+        return " ".join(sentence.structurestring() for sentence in self.sentences)
+
+    def filledstructurestring(self):
+        return " ".join(sentence.filledstructurestring() for sentence in self.sentences)
+
     def print(self):
         print(self.string())
+
+    def printfilledstructure(self):
+        print(self.filledstructurestring())
 
     def printstats(self):
         print("\nParagraph Stats:")
@@ -108,7 +126,6 @@ class Sentence:
                 print("Error in S.build with {}".format(tokens[total-remaining]))
                 break
 
-
     def word_count(self):
         return sum(x.word_count() for x in self.clauses)
 
@@ -118,10 +135,16 @@ class Sentence:
     def clausestrings(self):
         return [clause.string() for clause in self.clauses]
 
+    def structurestring(self):
+        return " ".join([x.structurestring() for x in self.clauses])
+
+    def filledstructurestring(self):
+        return " ".join([clause.filledstructurestring() for clause in self.clauses])
+
     def structure(self):
         return [x.structure() for x in self.clauses]
 
-    def structurestring(self):
+    def filledstructure(self):
         return [x.filledstructure() for x in self.clauses]
 
     def print(self):
@@ -196,6 +219,12 @@ class Clause:
 
         return " ".join(stringlist)
 
+    def structurestring(self):
+        return " ".join(self.structure())
+
+    def filledstructurestring(self):
+        return str(self.filledstructure())
+
     def structure(self):
         partslist = []
         for part in self.parts:
@@ -234,14 +263,14 @@ class Clause:
 # Parser Class Tests
 def run_tests():
     sentences = [
-        ['The', 'man', 'in', 'the', 'mask', 'screamed', '.']#,
-        # [['The', 'woman', 'laughed'], ['.']],
-        # [['The', 'boy', 'cried'], ['.']],
-        # [['The', 'girl', 'in', 'the', 'petticoat', 'smiled'], ['.']],
-        # [['The', 'dog', 'with', 'a', 'bone', 'whined'], ['.']],
-        # [['The', 'cat', 'mewed'], ['.']],
-        # [['Dr', 'John', 'said'], ['hello'], ['.']],
-        # [['Mr', 'Kim', 'gave', 'Mrs', 'Kim', 'a', 'gift'], ['.']]
+        ['The', 'man', 'in', 'the', 'mask', 'screamed', '.'],
+        [['The', 'woman', 'laughed'], ['.']],
+        [['The', 'boy', 'cried'], ['.']],
+        [['The', 'girl', 'in', 'the', 'petticoat', 'smiled'], ['.']],
+        [['The', 'dog', 'with', 'a', 'bone', 'whined'], ['.']],
+        [['The', 'cat', 'mewed'], ['.']],
+        [['Dr', 'John', 'said'], ['hello'], ['.']],
+        [['Mr', 'Kim', 'gave', 'Mrs', 'Kim', 'a', 'gift'], ['.']]
     ]
 
     t = Text()
@@ -249,11 +278,14 @@ def run_tests():
     for sentence in sentences:
         s = Sentence()
         s.build(sentence)
-        # for clause in s.clauses:
-        #    clause.printstats()
+        for clause in s.clauses:
+            clause.print()
+            clause.printstructure()
+            clause.printfilledstructure()
+            clause.printstats()
         print("\nSentence: {}".format(s.string()))
-        print("\tStructure: {}".format(s.structure()))
-        print("\tStructure Filled: {}".format(s.structurestring()))
+        print("\tStructure: {}".format(s.structurestring()))
+        print("\tStructure Filled: {}".format(s.filledstructurestring()))
         s.printstats()
         p.add(s)
 

@@ -1,13 +1,13 @@
 __author__ = 'bradleyt79'
+import nltkdict
 import longman3000
 import customdict
 
 # Contains functions for dealing with dictionaries.
 
 # Local dictionaries for testing
-type_dicts = [longman3000, customdict]
-freq_dicts = [longman3000]
-# TODO link to NLTK for dictionaries
+type_dicts = [nltkdict, longman3000, customdict]
+freq_dicts = [nltkdict, longman3000]
 
 
 # Simply returns the type of the word given it by querying the type_dicts until the word is found.

@@ -122,7 +122,7 @@ class Adv(Terminal):
 class ProN(Terminal):
     def __init__(self):
         super().__init__()
-        self.type = "ProN"
+        self.type = "Pron"
     
     
 class Prep(Terminal):
