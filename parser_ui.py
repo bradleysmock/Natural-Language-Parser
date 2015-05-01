@@ -1,5 +1,3 @@
-from builtins import print
-
 __author__ = 'bradleyt79'
 
 import parser
